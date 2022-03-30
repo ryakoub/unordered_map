@@ -13,6 +13,7 @@
 // and look through the other code files in this directory for examples and
 // hints.
 
+#include <algorithm>
 #include <iostream>
 
 #include "UnorderedMapCommon.h"
@@ -56,7 +57,17 @@ StringIntMap makeWordCounts(const StringVec& words) {
   // =================================================
   // EXERCISE 1 WORKSPACE: YOUR CODE HERE
   // =================================================
-
+  
+  for (const auto& word : words) {
+    if (std::count(words.cbegin(), words.cend(), word) == 0) { /*doesn't exist*/
+      wordcount_map[word] = 1;
+    }
+    else {
+      wordcount_map[word] += 1;
+    }
+  }
+  
+  
   return wordcount_map;
 }
 
@@ -101,7 +112,14 @@ int lookupWithFallback(const StringIntMap& wordcount_map, const std::string& key
   // EXERCISE 2 WORKSPACE: YOUR CODE HERE
   // =================================================
 
-  return -1337; // Change this!
+  int ret = 0;
+  if (wordcount_map.count(key)) {
+    ret = wordcount_map.at(key);
+  }
+  else {
+    ret = fallbackVal;
+  }
+  return ret;
 }
 
 
@@ -214,7 +232,7 @@ int memoizedLongestPalindromeLength(LengthMemo& memo, const std::string& str, in
     // new in this case. So, we also won't store anything new in the table in
     // this case, only return what's already stored at this key in the map.
 
-    return -1337; // Hint: You need to change this!
+    return memo[pairKey];
     // ====================================================================
 
   }
@@ -321,7 +339,8 @@ int memoizedLongestPalindromeLength(LengthMemo& memo, const std::string& str, in
   // =======================================================================
   // EXERCISE 3 - PART B - YOUR CODE HERE!
   //
-  return -1337; // Hint: You need to change this!
+  memo[pairKey] = greaterResult;
+  return greaterResult; 
   // =======================================================================
 }
 
